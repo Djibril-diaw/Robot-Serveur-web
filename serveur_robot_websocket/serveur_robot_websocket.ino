@@ -33,6 +33,10 @@ WebSocketsServer webSocket = WebSocketsServer(81);
 bool movSTATUS;
 const char avance[] = "avance";
 const char halte[] = "halte";
+const char droite[] = "droite";
+const char gauche[] = "gauche";
+const char recule[] = "recule";
+
 
 void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length)
 {
@@ -47,35 +51,36 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length
         Serial.printf("[%u] Connected from %d.%d.%d.%d url: %s\r\n", num, ip[0], ip[1], ip[2], ip[3], payload);
         // payload = contenu du message envoyé
         // Send the current LED status
-        if (movSTATUS) {
+    /*    if (movSTATUS) {
           Serial.println("movSTATUS");
           webSocket.sendTXT(num, avance, strlen(avance));
         }
         else {
           webSocket.sendTXT(num, halte, strlen(halte));
           Serial.println("movSTATUS else");
-        }
+        }  */
       }
       break;
     case WStype_TEXT:
       Serial.printf("[%u] get Text: %s\r\n", num, payload);
 
       if (strcmp(avance, (const char *)payload) == 0) {
-        writeLED (true);
-      Serial.print("A");        
-          digitalWrite(16, HIGH);
-          digitalWrite(15, HIGH);
-          digitalWrite(0, LOW);
-          digitalWrite(13, LOW); 
+       // writeLED (true);      
+        A();
       }
       else if (strcmp(halte, (const char *)payload) == 0) {
-        writeLED(false);
-      Serial.print("A");        
-          digitalWrite(16, HIGH);
-          digitalWrite(15, HIGH);
-          digitalWrite(0, LOW);
-          digitalWrite(13, LOW);  
+      //  writeLED(false);     
+         S();  
       }
+      else if (strcmp(droite, (const char *)payload) == 0) {  
+         D();  
+      }      
+      else if (strcmp(gauche, (const char *)payload) == 0) {
+        G();
+      }
+      else if (strcmp(recule, (const char *)payload) == 0) {  
+         R();  
+      }      
       else {
         Serial.println("Unknown command");
       }
@@ -275,7 +280,7 @@ void loop(void){
   webSocket.loop();
   server.handleClient(); 
 
-   if (Serial.available() > 0) {
+ /*  if (Serial.available() > 0) {
     char inByte = Serial.read();
     //Serial.println(inByte);
     //Ping
@@ -288,6 +293,6 @@ void loop(void){
       handleLED2();
     }
    }
-
+*/
 
 }

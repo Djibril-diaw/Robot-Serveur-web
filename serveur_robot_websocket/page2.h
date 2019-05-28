@@ -140,7 +140,7 @@ function start() {
 function buttonclick(e) {
   websock.send(e.id);
 }
- /* 
+  
     function avance() {
   websock.send("avance");
     }
@@ -151,33 +151,27 @@ function buttonclick(e) {
     }
    
     function recule() {
-    var xhttp5 = new XMLHttpRequest();
-  xhttp5.open("POST", "recule" , true);
-  xhttp5.send();
+  websock.send("recule");
     }
 
     function gauche() {
-    var xhttp6 = new XMLHttpRequest();
-  xhttp6.open("POST", "gauche" , true);
-  xhttp6.send();
+  websock.send("gauche");
     }
 
     function droite() {
-    var xhttp7 = new XMLHttpRequest();
-  xhttp7.open("POST", "droite" , true);
-  xhttp7.send();
+  websock.send("droite");
     }
-    */
+    
 </script>
   </head>
 <body onload="javascript:start();">
 <div >
-    <button id="avance" type="button" value="avance" onclick="buttonclick(this);"> </button> 
+    <button id="avance" type="button" value="avance" onclick="avance();" /> 
 </div>   
 <div id="trois">
     <input id="gauche" type="button" value="gauche" onclick="gauche();" />
 
-    <input id="halte" type="button" value="halte" onclick="buttonclick(this);" />
+    <input id="halte" type="button" value="halte" onclick="halte();" />
 
     <input id="droite" type="button" value="droite" onclick="droite();" />  
 </div>
