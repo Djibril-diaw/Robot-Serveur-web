@@ -122,12 +122,12 @@ void handleNotFound()
   }
   server.send(404, "text/plain", message);
 }
-
+/*
 void handleADC() {
  int a = digitalRead(12);
  String adcValue = String(a);
  server.send(200, "text/plane", adcValue); //Send ADC value only to client ajax request
-}
+}  */
 
 void A() {
 Serial.print("A");        
@@ -180,7 +180,7 @@ else {
 }
 }
 
-
+/*
 static void writeLED(bool avance)
 {
   movSTATUS = avance;
@@ -198,7 +198,7 @@ static void writeLED(bool avance)
           digitalWrite(13, LOW); 
   }
 }
-
+*/
 //==============================================================
 //                  SETUP
 void setup(void){
@@ -278,6 +278,7 @@ void setup(void){
 //==============================================================
 void loop(void){
   webSocket.loop();
+  
   server.handleClient(); 
 
  /*  if (Serial.available() > 0) {

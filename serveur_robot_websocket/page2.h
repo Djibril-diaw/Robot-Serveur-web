@@ -16,8 +16,8 @@ static const char PROGMEM INDEX_HTML[] = R"rawliteral(
 {
   height: 110px;
   width: 110px; 
-/*  background:url("https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Znak_D-3.svg/220px-Znak_D-3.svg.png") no-repeat;  
-  background-size: contain; */
+  background:url("https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Znak_D-3.svg/220px-Znak_D-3.svg.png") no-repeat;  
+  background-size: contain; 
   }
 
 #avance:hover,#halte:hover,#recule:hover,#gauche:hover,#droite:hover /* Apparence au survol des liens */
@@ -34,32 +34,32 @@ static const char PROGMEM INDEX_HTML[] = R"rawliteral(
 {
   height: 120px;
   width:120px; 
-/*  background-image:url("https://i.imgur.com/QGzfhXu.gif");
-  background-size: contain; */
+  background-image:url("https://i.imgur.com/QGzfhXu.gif");
+  background-size: contain; 
 }
 
 #recule
 {
   height: 110px;
   width: 110px; 
-/*  background:url("https://i.imgur.com/pDZdveb.png") no-repeat;
-  background-size: contain;  */
+  background:url("https://i.imgur.com/pDZdveb.png") no-repeat;
+  background-size: contain;  
   }
 
 #gauche
 {
   height: 110px;
   width: 110px; 
-/*  background:url("https://i.imgur.com/KpzZECB.png") no-repeat;
-  background-size: contain;   */
+  background:url("https://i.imgur.com/KpzZECB.png") no-repeat;
+  background-size: contain;   
   } 
 
 #droite
 {
   height: 110px;
   width: 110px; 
-/*  background:url("https://i.imgur.com/gpH5Wvl.png") no-repeat;
-  background-size: contain;  */
+  background:url("https://i.imgur.com/gpH5Wvl.png") no-repeat;
+  background-size: contain;  
   }
 
 p
