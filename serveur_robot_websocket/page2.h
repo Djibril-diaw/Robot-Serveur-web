@@ -21,6 +21,13 @@ static const char PROGMEM INDEX_HTML[] = R"rawliteral(
    opacity: 0.6;
 }
 
+#gyro 
+{
+  height: 80px;
+  width: 140px;
+  justify-content :right;
+}
+
 #avance:active,#halte:active,#recule:active,#gauche:active,#droite:active
 {
    box-shadow: 10px 10px 10px black; 
@@ -113,8 +120,8 @@ p
  </style> 
 
 <script>
- var width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
-
+var width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+var gyroselect = 0;
 var websock;
 function start() {
   websock = new WebSocket('ws://' + window.location.hostname + ':81/');
@@ -139,52 +146,46 @@ function start() {
 function buttonclick(e) {
   websock.send(e.id);
 }
+
+function gyroclick() {
+  if (gyroselect == 0){
+    gyroselect = 1;
+  }
+  else {
+    gyroselect = 0;
+  }
+  console.log('gyroselect = '+ gyroselect);
+}
   
     function avance() {
+      if(gyroselect == 0){
   websock.send("avance");
     }
+  }
     
 
     function halte() {
+      if(gyroselect == 0){
   websock.send("halte");
     }
-   
+  }
     function recule() {
+      if(gyroselect == 0){ 
   websock.send("recule");
     }
-
+  }
     function gauche() {
+      if(gyroselect == 0){
   websock.send("gauche");
     }
-
+  }
     function droite() {
+      if(gyroselect == 0){
   websock.send("droite");
     }
-    
-</script>
-  </head>
-<body onload="javascript:start();">
-<div >
-    <button id="avance" type="button" value="avance" onclick="avance();" /> 
-</div>   
-<div id="trois">
-    <input id="gauche" type="button" value="gauche" onclick="gauche();" />
+  }
 
-    <input id="halte" type="button" value="halte" onclick="halte();" />
-
-    <input id="droite" type="button" value="droite" onclick="droite();" />  
-</div>
-<div>
-    <input id="recule" type="button" value="recule" onclick="recule();" />
-</div>
-
-<p>gyro.getFeatures: <span id="features"></span></p>
-  <span id="example"></span>
-  <script>
-  console.log('width = '+ width);
-if (width <1300) {
-
-  (function (root, factory) {
+      (function (root, factory) {
     if (typeof define === 'function' && define.amd) {
         // AMD. Register as an anonymous module.
         define(factory);
@@ -429,7 +430,7 @@ if (width <1300) {
                     "<p> alpha = " + o.alpha + "</p>" +
                     "<p> beta = " + o.beta + "</p>" +
                     "<p> gamma = " + o.gamma + "</p>";
-                    
+  if (gyroselect == 1){                  
     if (o.gamma > -40 && o.gamma < 40){
 
       if (o.beta > 45){
@@ -451,9 +452,42 @@ if (width <1300) {
     else {
       console.log('pas de gyro'); 
     }
-    });
+  }
+ });
 
-}
+    
+    
+</script>
+  </head>
+<body onload="javascript:start();">
+
+<div >
+    <button id="gyro" type="button" value="gyro" onclick="gyroclick();" /> 
+</div> 
+</br>
+<div >
+    <button id="avance" type="button" value="avance" onclick="avance();" /> 
+</div>   
+<div id="trois">
+    <input id="gauche" type="button" value="gauche" onclick="gauche();" />
+
+    <input id="halte" type="button" value="halte" onclick="halte();" />
+
+    <input id="droite" type="button" value="droite" onclick="droite();" />  
+</div>
+<div>
+    <input id="recule" type="button" value="recule" onclick="recule();" />
+</div>
+
+<p>gyro.getFeatures: <span id="features"></span></p>
+  <span id="example"></span>
+  <script>
+  console.log('width = '+ width);
+//if (width <1300) {
+
+
+
+
   </script>
 
   

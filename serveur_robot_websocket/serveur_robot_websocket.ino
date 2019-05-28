@@ -15,7 +15,7 @@
 int lum;
 int x;
 //SSID and Password of your WiFi router
-static const char ssid[] = "CRI-";//"CRI-MAKERLAB";
+static const char ssid[] = "CRI-MAKERLAB";//"CRI-MAKERLAB";
 static const char password[] = "--criMAKER--";//"--criMAKER--";
 MDNSResponder mdns;
 
