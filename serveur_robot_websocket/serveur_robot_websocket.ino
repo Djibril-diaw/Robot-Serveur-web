@@ -5,27 +5,26 @@
  */
 #include <ESP8266WiFi.h>
 #include <WiFiClient.h>
-#include <ESP8266WebServer.h>
 #include <WebSocketsServer.h>
 #include <Hash.h>
+#include <ESP8266WebServer.h>
 #include <ESP8266mDNS.h>
-#include "page2.h" //Our HTML webpage contents with javascripts
+
 
 #define LED 2  //On board LED
 int lum;
 int x;
 //SSID and Password of your WiFi router
-const char* ssid = "CRI-MAKERLAB";//"CRI-MAKERLAB";
-const char* password = "--criMAKER--";//"--criMAKER--";
-
+static const char ssid[] = "CRI-MAKERLAB";//"CRI-MAKERLAB";
+static const char password[] = "--criMAKER--";//"--criMAKER--";
 MDNSResponder mdns;
 
 static void writeLED(bool);
 
 ESP8266WebServer server(80); //Server on port 80
-
 WebSocketsServer webSocket = WebSocketsServer(81);
 
+#include "page2.h" //Our HTML webpage contents with javascripts
 
 //===============================================================
 // This routine is executed when you open its IP in browser
@@ -199,14 +198,16 @@ static void writeLED(bool avance)
 //                  SETUP
 void setup(void){
   Serial.begin(115200);
-  WiFi.begin(ssid, password);     //Connect to your WiFi router
-  Serial.println("a");
+
 
   for(uint8_t t = 4; t > 0; t--) {
     Serial.printf("[SETUP] BOOT WAIT %d...\r\n", t);
     Serial.flush();
     delay(1000);
   }  
+
+  WiFi.begin(ssid, password);     //Connect to your WiFi router
+  Serial.println("a");  
 
   //Onboard LED port Direction output
   pinMode(16,OUTPUT); 
@@ -229,6 +230,7 @@ void setup(void){
     delay(500);
     Serial.print(".");
   }
+  
   //If connection successful show IP address in serial monitor
   Serial.println("");
   Serial.print("Connected to ");
@@ -270,6 +272,7 @@ void setup(void){
 //                     LOOP
 //==============================================================
 void loop(void){
+  webSocket.loop();
   server.handleClient(); 
 
    if (Serial.available() > 0) {

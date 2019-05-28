@@ -2,8 +2,8 @@ static const char PROGMEM INDEX_HTML[] = R"rawliteral(
 <!DOCTYPE html>
 <html>
   <head>
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-  <script src = "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>  
     <style>
 
       canvas{
@@ -16,8 +16,8 @@ static const char PROGMEM INDEX_HTML[] = R"rawliteral(
 {
   height: 110px;
   width: 110px; 
-  background:url("https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Znak_D-3.svg/220px-Znak_D-3.svg.png") no-repeat;  
-  background-size: contain; 
+/*  background:url("https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Znak_D-3.svg/220px-Znak_D-3.svg.png") no-repeat;  
+  background-size: contain; */
   }
 
 #avance:hover,#halte:hover,#recule:hover,#gauche:hover,#droite:hover /* Apparence au survol des liens */
@@ -34,32 +34,32 @@ static const char PROGMEM INDEX_HTML[] = R"rawliteral(
 {
   height: 120px;
   width:120px; 
-  background-image:url("https://i.imgur.com/QGzfhXu.gif");
-  background-size: contain; 
+/*  background-image:url("https://i.imgur.com/QGzfhXu.gif");
+  background-size: contain; */
 }
 
 #recule
 {
   height: 110px;
   width: 110px; 
-  background:url("https://i.imgur.com/pDZdveb.png") no-repeat;
-  background-size: contain;  
+/*  background:url("https://i.imgur.com/pDZdveb.png") no-repeat;
+  background-size: contain;  */
   }
 
 #gauche
 {
   height: 110px;
   width: 110px; 
-  background:url("https://i.imgur.com/KpzZECB.png") no-repeat;
-  background-size: contain;   
+/*  background:url("https://i.imgur.com/KpzZECB.png") no-repeat;
+  background-size: contain;   */
   } 
 
 #droite
 {
   height: 110px;
   width: 110px; 
-  background:url("https://i.imgur.com/gpH5Wvl.png") no-repeat;
-  background-size: contain;  
+/*  background:url("https://i.imgur.com/gpH5Wvl.png") no-repeat;
+  background-size: contain;  */
   }
 
 p
@@ -123,9 +123,9 @@ function start() {
   websock.onopen = function(evt) { console.log('websock open'); };
   websock.onclose = function(evt) { console.log('websock close'); };
   websock.onerror = function(evt) { console.log(evt); };
-  websock.onmessage = function(evt) {
+/*  websock.onmessage = function(evt) {
     console.log(evt);
-    var e = document.ElementById('movSTATUS');
+    var e = document.getElementById();
     if (evt.data === 'avance') {
       e.style.color = 'red';
     }
@@ -135,7 +135,7 @@ function start() {
     else {
       console.log('unknown event');   
     } 
-  };
+  };  */
 }
 function buttonclick(e) {
   websock.send(e.id);
@@ -172,7 +172,7 @@ function buttonclick(e) {
   </head>
 <body onload="javascript:start();">
 <div >
-    <button id="avance" type="button" value="avance" onclick="buttonclick(this);" /> 
+    <button id="avance" type="button" value="avance" onclick="buttonclick(this);"> </button> 
 </div>   
 <div id="trois">
     <input id="gauche" type="button" value="gauche" onclick="gauche();" />
