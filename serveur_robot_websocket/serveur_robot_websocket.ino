@@ -15,7 +15,7 @@
 int lum;
 int x;
 //SSID and Password of your WiFi router
-static const char ssid[] = "CRI-MAKERLAB";//"CRI-MAKERLAB";
+static const char ssid[] = "CRI-";//"CRI-MAKERLAB";
 static const char password[] = "--criMAKER--";//"--criMAKER--";
 MDNSResponder mdns;
 
@@ -85,7 +85,7 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length
         Serial.println("Unknown command");
       }
       // send data to all connected clients
-      webSocket.broadcastTXT(payload, length);
+      //webSocket.broadcastTXT(payload, length);  // envoie le message reçu à tous les appareils connectés
       break;
     case WStype_BIN:
       Serial.printf("[%u] get binary length: %u\r\n", num, length);
@@ -130,7 +130,8 @@ void handleADC() {
 }  */
 
 void A() {
-Serial.print("A");        
+Serial.print("A"); 
+webSocket.sendTXT(0, "A");     
           digitalWrite(16, HIGH);
           digitalWrite(15, HIGH);
           digitalWrite(0, LOW);
@@ -139,6 +140,7 @@ Serial.print("A");
 
 void R() {
 Serial.print("R");
+webSocket.sendTXT(0, "R"); 
           digitalWrite(16, LOW);
           digitalWrite(15, LOW);
           digitalWrite(0, HIGH);
@@ -147,6 +149,7 @@ Serial.print("R");
 
 void G() {
 Serial.print("G");
+webSocket.sendTXT(0, "G"); 
           digitalWrite(16, HIGH);
           digitalWrite(15, LOW);
           digitalWrite(0, LOW);
@@ -154,7 +157,8 @@ Serial.print("G");
 }
 
 void D() {
-Serial.print("S");
+Serial.print("D");
+webSocket.sendTXT(0, "D"); 
 digitalWrite(16, LOW);
 digitalWrite(15, HIGH);
 digitalWrite(0, HIGH);
@@ -163,6 +167,7 @@ digitalWrite(13, LOW);
 
 void S() {
 Serial.print("S");
+webSocket.sendTXT(0, "S"); 
 digitalWrite(16, LOW);
 digitalWrite(15, LOW);
 digitalWrite(0, LOW);
