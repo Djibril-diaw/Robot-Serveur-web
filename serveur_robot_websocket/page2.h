@@ -159,29 +159,29 @@ function gyroclick() {
   
     function avance() {
       if(gyroselect == 0){
-  websock.send("avance");
+  websock.send("1");
     }
   }
     
 
     function halte() {
       if(gyroselect == 0){
-  websock.send("halte");
+  websock.send("2");
     }
   }
     function recule() {
       if(gyroselect == 0){ 
-  websock.send("recule");
+  websock.send("3");
     }
   }
     function gauche() {
       if(gyroselect == 0){
-  websock.send("gauche");
+  websock.send("4");
     }
   }
     function droite() {
       if(gyroselect == 0){
-  websock.send("droite");
+  websock.send("5");
     }
   }
 

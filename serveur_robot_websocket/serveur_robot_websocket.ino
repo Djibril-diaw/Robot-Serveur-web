@@ -31,11 +31,6 @@ WebSocketsServer webSocket = WebSocketsServer(81);
 //===============================================================
 
 bool movSTATUS;
-const char avance[] = "avance";
-const char halte[] = "halte";
-const char droite[] = "droite";
-const char gauche[] = "gauche";
-const char recule[] = "recule";
 
 
 void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length)
@@ -64,22 +59,20 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length
     case WStype_TEXT:
       Serial.printf("[%u] get Text: %s\r\n", num, payload);
 
-      if (strcmp(avance, (const char *)payload) == 0) {
-       // writeLED (true);      
+      if (payload[0] == '1') {  
         A();
       }
-      else if (strcmp(halte, (const char *)payload) == 0) {
-      //  writeLED(false);     
+      else if (payload[0] == '2') {     
          S();  
       }
-      else if (strcmp(droite, (const char *)payload) == 0) {  
-         D();  
-      }      
-      else if (strcmp(gauche, (const char *)payload) == 0) {
-        G();
-      }
-      else if (strcmp(recule, (const char *)payload) == 0) {  
+      else if (payload[0] == '3') {  
          R();  
+      } 
+      else if (payload[0] == '4') {
+        G();
+      }            
+      else if (payload[0] == '5') {  
+         D();  
       }      
       else {
         Serial.println("Unknown command");
@@ -131,34 +124,34 @@ void handleADC() {
 
 void A() {
 Serial.print("A"); 
-webSocket.sendTXT(0, "A");     
-          digitalWrite(16, HIGH);
-          digitalWrite(15, HIGH);
-          digitalWrite(0, LOW);
-          digitalWrite(13, LOW); 
+webSocket.sendTXT(0, "le robot avance");     
+digitalWrite(16, HIGH);
+digitalWrite(15, HIGH);
+digitalWrite(0, LOW);
+digitalWrite(13, LOW); 
 }
 
 void R() {
 Serial.print("R");
-webSocket.sendTXT(0, "R"); 
-          digitalWrite(16, LOW);
-          digitalWrite(15, LOW);
-          digitalWrite(0, HIGH);
-          digitalWrite(13, HIGH); 
+webSocket.sendTXT(0, "le robot recule"); 
+digitalWrite(16, LOW);
+digitalWrite(15, LOW);
+digitalWrite(0, HIGH);
+digitalWrite(13, HIGH); 
 }
 
 void G() {
 Serial.print("G");
-webSocket.sendTXT(0, "G"); 
-          digitalWrite(16, HIGH);
-          digitalWrite(15, LOW);
-          digitalWrite(0, LOW);
-          digitalWrite(13, HIGH);
+webSocket.sendTXT(0, "le robot tourne vers la gauche"); 
+digitalWrite(16, HIGH);
+digitalWrite(15, LOW);
+digitalWrite(0, LOW);
+digitalWrite(13, HIGH);
 }
 
 void D() {
 Serial.print("D");
-webSocket.sendTXT(0, "D"); 
+webSocket.sendTXT(0, "le robot tourne vers la droite"); 
 digitalWrite(16, LOW);
 digitalWrite(15, HIGH);
 digitalWrite(0, HIGH);
@@ -167,7 +160,7 @@ digitalWrite(13, LOW);
 
 void S() {
 Serial.print("S");
-webSocket.sendTXT(0, "S"); 
+webSocket.sendTXT(0, "le robot s'arrête"); 
 digitalWrite(16, LOW);
 digitalWrite(15, LOW);
 digitalWrite(0, LOW);
@@ -260,15 +253,6 @@ void setup(void){
   Serial.println(WiFi.localIP());
   
   server.on("/", handleRoot);      //Which routine to handle at root location. This is display page
-  /*
-  server.on("/LED", handleLED2); 
-  server.on("/avance", A);
-  server.on("/recule", R);
-  server.on("/gauche", G);
-  server.on("/droite", D);
-  server.on("/halte", S);
-  server.on("/readADC", handleADC); //This page is called by java Script AJAX  
-*/
   server.onNotFound(handleNotFound);
 
   
