@@ -10,10 +10,8 @@
 #include <ESP8266WebServer.h>
 #include <ESP8266mDNS.h>
 
-
 #define LED 2  //On board LED
-int lum;
-int x;
+
 //SSID and Password of your WiFi router
 static const char ssid[] = "CRI-MAKERLAB";//"CRI-MAKERLAB";
 static const char password[] = "--criMAKER--";//"--criMAKER--";
@@ -32,7 +30,7 @@ WebSocketsServer webSocket = WebSocketsServer(81);
 
 bool movSTATUS;
 
-
+// fonction activée lorsqu'on reçoit des données dans le websocket
 void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length)
 {
   Serial.printf("webSocketEvent(%d, %d, ...)\r\n", num, type);
@@ -45,21 +43,12 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length
         IPAddress ip = webSocket.remoteIP(num);
         Serial.printf("[%u] Connected from %d.%d.%d.%d url: %s\r\n", num, ip[0], ip[1], ip[2], ip[3], payload);
         // payload = contenu du message envoyé
-        // Send the current LED status
-    /*    if (movSTATUS) {
-          Serial.println("movSTATUS");
-          webSocket.sendTXT(num, avance, strlen(avance));
-        }
-        else {
-          webSocket.sendTXT(num, halte, strlen(halte));
-          Serial.println("movSTATUS else");
-        }  */
       }
       break;
     case WStype_TEXT:
       Serial.printf("[%u] get Text: %s\r\n", num, payload);
 
-      if (payload[0] == '1') {  
+      if (payload[0] == '1') {  //lorsque on recoit "1" dans le websock, appelle la fonction "A"
         A();
       }
       else if (payload[0] == '2') {     
@@ -71,7 +60,7 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length
       else if (payload[0] == '4') {
         G();
       }            
-      else if (payload[0] == '5') {  
+      else if (payload[0] == '5') {
          D();  
       }      
       else {
@@ -115,15 +104,13 @@ void handleNotFound()
   }
   server.send(404, "text/plain", message);
 }
-/*
-void handleADC() {
- int a = digitalRead(12);
- String adcValue = String(a);
- server.send(200, "text/plane", adcValue); //Send ADC value only to client ajax request
-}  */
 
+
+//===============================================================
+// Fonctions contrôlant le déplacement du robot
+//===============================================================
 void A() {
-Serial.print("A"); 
+Serial.print("le robot avance"); 
 webSocket.sendTXT(0, "le robot avance");     
 digitalWrite(16, HIGH);
 digitalWrite(15, HIGH);
@@ -132,7 +119,7 @@ digitalWrite(13, LOW);
 }
 
 void R() {
-Serial.print("R");
+Serial.print("le robot recule");
 webSocket.sendTXT(0, "le robot recule"); 
 digitalWrite(16, LOW);
 digitalWrite(15, LOW);
@@ -141,7 +128,7 @@ digitalWrite(13, HIGH);
 }
 
 void G() {
-Serial.print("G");
+Serial.print("le robot tourne vers la gauche");
 webSocket.sendTXT(0, "le robot tourne vers la gauche"); 
 digitalWrite(16, HIGH);
 digitalWrite(15, LOW);
@@ -150,7 +137,7 @@ digitalWrite(13, HIGH);
 }
 
 void D() {
-Serial.print("D");
+Serial.print("le robot tourne vers la droite");
 webSocket.sendTXT(0, "le robot tourne vers la droite"); 
 digitalWrite(16, LOW);
 digitalWrite(15, HIGH);
@@ -159,7 +146,7 @@ digitalWrite(13, LOW);
 }
 
 void S() {
-Serial.print("S");
+Serial.print("le robot s'arrête");
 webSocket.sendTXT(0, "le robot s'arrête"); 
 digitalWrite(16, LOW);
 digitalWrite(15, LOW);
@@ -167,38 +154,9 @@ digitalWrite(0, LOW);
 digitalWrite(13, LOW);
 }
 
-void handleLED2() {
-if (lum==0) {
-  lum = 1;
-  digitalWrite(LED,HIGH);
-}
-else {
-  lum = 0;
-  digitalWrite(LED,LOW);
-}
-}
-
-/*
-static void writeLED(bool avance)
-{
-  movSTATUS = avance;
-  // Note inverted logic for Adafruit HUZZAH board
-  if (avance) {
-          digitalWrite(16, HIGH);
-          digitalWrite(15, HIGH);
-          digitalWrite(0, LOW);
-          digitalWrite(13, LOW); 
-  }
-  else {
-          digitalWrite(16, LOW);
-          digitalWrite(15, LOW);
-          digitalWrite(0, LOW);
-          digitalWrite(13, LOW); 
-  }
-}
-*/
 //==============================================================
 //                  SETUP
+//==============================================================
 void setup(void){
   Serial.begin(115200);
 
@@ -212,7 +170,7 @@ void setup(void){
   WiFi.begin(ssid, password);     //Connect to your WiFi router
   Serial.println("a");  
 
-  //Onboard LED port Direction output
+  //initialisation des pins
   pinMode(16,OUTPUT); 
   pinMode(0,OUTPUT);
   pinMode(15,OUTPUT);
@@ -255,10 +213,10 @@ void setup(void){
   server.on("/", handleRoot);      //Which routine to handle at root location. This is display page
   server.onNotFound(handleNotFound);
 
-  
-  server.begin();                  //Start server
+  //Start server
+  server.begin();                  
   webSocket.begin();
-  webSocket.onEvent(webSocketEvent);
+  webSocket.onEvent(webSocketEvent);  //Lors d'un message venant du websocket, appelle la fonction webSocketEvent
   
   Serial.println("HTTP server started"); 
 } 
@@ -267,22 +225,5 @@ void setup(void){
 //==============================================================
 void loop(void){
   webSocket.loop();
-  
   server.handleClient(); 
-
- /*  if (Serial.available() > 0) {
-    char inByte = Serial.read();
-    //Serial.println(inByte);
-    //Ping
-    if (inByte == '?') {
-      Serial.println("?");
-    }
-
-    else if (inByte == 'a') {
-      Serial.println("a");
-      handleLED2();
-    }
-   }
-*/
-
 }

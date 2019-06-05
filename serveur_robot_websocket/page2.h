@@ -8,6 +8,66 @@ static const char PROGMEM INDEX_HTML[] = R"rawliteral(
 
 /* gère l'apparence de la page */
 
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input {
+  display: none;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #f25221;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked+.slider {
+  background-color: #2196F3;
+}
+
+input:focus+.slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked+.slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+
+/* Rounded sliders */
+
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
 #avance
 {
   height: 110px;
@@ -129,24 +189,9 @@ function start() {
   websock.onclose = function(evt) { console.log('websock close'); };
   websock.onmessage = function(evt) {console.log(evt);};
   websock.onerror = function(evt) { console.log(evt); };
-/*  websock.onmessage = function(evt) {
-    console.log(evt);
-    var e = document.getElementById();
-    if (evt.data === 'avance') {
-      e.style.color = 'red';
-    }
-    else if (evt.data === 'halte') {
-      e.style.color = 'black';
-    }
-    else {
-      console.log('unknown event');   
-    } 
-  };  */
-}
-function buttonclick(e) {
-  websock.send(e.id);
 }
 
+// permet de switch entre le gyroscope et les boutons
 function gyroclick() {
   if (gyroselect == 0){
     gyroselect = 1;
@@ -156,13 +201,14 @@ function gyroclick() {
   }
   console.log('gyroselect = '+ gyroselect);
 }
-  
+
+
+//fonctions controlant le déplacement du robot
     function avance() {
       if(gyroselect == 0){
   websock.send("1");
     }
   }
-    
 
     function halte() {
       if(gyroselect == 0){
@@ -185,6 +231,7 @@ function gyroclick() {
     }
   }
 
+// les fonctions suivantes utilisent le gyroscope du téléphone
       (function (root, factory) {
     if (typeof define === 'function' && define.amd) {
         // AMD. Register as an anonymous module.
@@ -430,24 +477,25 @@ function gyroclick() {
                     "<p> alpha = " + o.alpha + "</p>" +
                     "<p> beta = " + o.beta + "</p>" +
                     "<p> gamma = " + o.gamma + "</p>";
-  if (gyroselect == 1){                  
+  if (gyroselect == 1){    
+    // permet de controler le déplacment du robot en fonction de l'inclinaison du téléphone              
     if (o.gamma > -40 && o.gamma < 40){
-
-      if (o.beta > 45){
-      websock.send('recule');
+      
+      if (o.beta <-10) {
+      websock.send("1");
       }
       else if (o.beta <45 && o.beta> -10) {
-      websock.send('halte');                      
+      websock.send("2");                      
       }
-      else if (o.beta <-10) {
-      websock.send('avance');
+      else if (o.beta > 45){
+      websock.send("3");
       }
     }
     else if (o.gamma < -40) {
-      websock.send('gauche');
+      websock.send("4");
     }
     else if (o.gamma >40) {
-      websock.send('droite');
+      websock.send("5");
     }
     else {
       console.log('pas de gyro'); 
@@ -462,18 +510,21 @@ function gyroclick() {
 <body onload="javascript:start();">
 
 <div >
-    <button id="gyro" type="button" value="gyro" onclick="gyroclick();" /> 
+<label class="switch">
+    <input type="checkbox" id="gyro" value="gyro" onchange="gyroclick();" checked/> 
+  <span class="slider round"></span>
+</label>
 </div> 
 </br>
 <div >
     <button id="avance" type="button" value="avance" onclick="avance();" /> 
 </div>   
 <div id="trois">
-    <input id="gauche" type="button" value="gauche" onclick="gauche();" />
+    <button id="gauche" type="button" value="gauche" onclick="gauche();" />
 
-    <input id="halte" type="button" value="halte" onclick="halte();" />
+    <button id="halte" type="button" value="halte" onclick="halte();" />
 
-    <input id="droite" type="button" value="droite" onclick="droite();" />  
+    <button id="droite" type="button" value="droite" onclick="droite();" />  
 </div>
 <div>
     <input id="recule" type="button" value="recule" onclick="recule();" />
