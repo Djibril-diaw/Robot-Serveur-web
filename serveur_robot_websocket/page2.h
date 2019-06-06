@@ -11,7 +11,7 @@ static const char PROGMEM INDEX_HTML[] = R"rawliteral(
 .switch {
   position: relative;
   display: inline-block;
-  width: 60px;
+  width: 100px;
   height: 34px;
 }
 
@@ -51,11 +51,41 @@ input:focus+.slider {
   box-shadow: 0 0 1px #2196F3;
 }
 
-input:checked+.slider:before {
-  -webkit-transform: translateX(26px);
-  -ms-transform: translateX(26px);
-  transform: translateX(26px);
+input:checked+.slider:before   {
+  -webkit-transform: translateX(66px);
+  -ms-transform: translateX(66px);
+  transform: translateX(66px);
 }
+
+/*------ ADDED CSS ---------*/
+.on
+{
+  display: none;
+ 
+}
+.on:after {
+  padding-left: 10px;
+}
+
+.on, .off
+{
+  color: white;
+  position: absolute;
+  transform: translate(-50%,-50%);
+  top: 50%;
+  left: 50%;
+  font-size: 10px;
+  font-family: Verdana, sans-serif;
+}
+
+
+input:checked+ .slider .on
+{display: block;
+}
+
+input:checked + .slider .off
+{display: none;}
+/*--------- END --------*/
 
 
 /* Rounded sliders */
@@ -512,7 +542,9 @@ function gyroclick() {
 <div >
 <label class="switch">
     <input type="checkbox" id="gyro" value="gyro" onchange="gyroclick();" checked/> 
-  <span class="slider round"></span>
+  <div class="slider round">
+     <span class="on">buttons</span><span class="off">gyro</span>
+  </div>
 </label>
 </div> 
 </br>
